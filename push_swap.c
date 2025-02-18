@@ -6,23 +6,21 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:19:18 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/02/12 15:56:28 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:58:39 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 t_stack	*completeStack(char **argv);
-int		posiciona(t_stack **a, int listsize);
-int		posicionb(t_stack **b, int listsize, int numbr);
+int		posiciona(t_stack **a, int num);
+int		posicionb(t_stack **b, int numB);
+int	posicionado(t_stack **a, t_stack **b);
 
 int	main(int argc, char **argv)
 {
 	t_stack	*a;
 	t_stack	*b;
-	int		sizea;
-	int		sizeb;
-	int		numbr;
 
 	if (argc < 1)
 		return (write(1, "\n", 1));
@@ -30,64 +28,80 @@ int	main(int argc, char **argv)
 	{
 		a = completeStack(argv);
 		b = NULL;
-		sizea = ft_lstsize(&a);
 		pb(&a, &b);
 		pb(&a, &b);
 		pb(&a, &b);
-		sizeb = ft_lstsize(&b);
 		ordena_b(&b);
 		calculacoste(&a, &b);
 		writeStack(a);
 		writeStack(b);
+		posicionado(&a, &b);
 		printf("----a---\n");
-		numbr = posiciona(&a, sizea);
 		writeStack(a);
 		printf("---b----\n");
-		posicionb(&b, sizeb, numbr);
 		writeStack(b);
 	}
 }
 
-int	posiciona(t_stack **a, int listsize)
+int	posicionado(t_stack **a, t_stack **b)
 {
-	int		num;
+	int		aa;
+	int		bb;
+	t_stack	*tmp;
+	int		numA;
+	int		numB;
+
+	tmp = (*a);
+	numA = encuentra(&tmp);
+	tmp = (*b);
+	numB = encuentrb(tmp, numA);
+	while (1 == 1)
+	{
+		aa = posiciona(a, numA);
+		bb = posicionb(b, numB);
+		if (aa == 1 && aa == bb)
+			rrr(a, b);
+		if (aa == 0 && aa == bb)
+			rr(a, b);
+		if (aa == 1 && bb == 0)
+		{
+			ra(a);
+			rrb(b);
+		}
+		else if (aa == 0 && bb == 1)
+		{
+			rra(a);
+			rb(b);
+		}
+		else if (aa == 2 && aa == 2)
+			return (1);
+	}
+}
+
+int	posiciona(t_stack **a, int num)
+{
 	t_stack	*temp;
 
 	temp = *a;
-	num = encuentra(&temp);
-	while (temp)
-	{
-		if (temp->num == num && temp->pos == 1)
-			return (1);
-		if (temp->num == num && temp->pos <= listsize / 2)
-			ra(a);
-		else
-			rra(a);
-		temp = *a;
-	}
-	return (num);
+	if (temp->num == num && temp->pos == 1)
+		return (1);
+	if (temp->num == num && temp->pos <= ft_lstsize(a) / 2)
+		return (0);
+	else
+		return (2);
 }
 
-int	posicionb(t_stack **b, int listsize, int numbr)
+int	posicionb(t_stack **b, int numB)
 {
-	int		num;
 	t_stack	*temp;
 
 	temp = *b;
-	num = encuentrb(temp, numbr);
-	while (temp)
-	{
-		if (temp->num == num && temp->pos == 1)
-			return (1);
-		if (temp->num == num && temp->pos <= listsize / 2)
-			rb(b);
-		else
-		{
-			rrb(b);
-		}
-		temp = *b;
-	}
-	return (0);
+	if (temp->num == numB && temp->pos == 1)
+		return (1);
+	if (temp->num == numB && temp->pos <= ft_lstsize(b) / 2)
+		return (0);
+	else
+		return (2);
 }
 
 t_stack	*completeStack(char **argv)
