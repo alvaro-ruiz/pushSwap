@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:21:42 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/01/29 16:34:02 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:33:49 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,18 @@ t_stack	*ft_stacknew(int content, int pos)
 	stack->cost = 0;
 	stack->pos = pos;
 	stack->next = NULL;
+	return (stack);
+}
+
+t_conroller	*ft_controller()
+{
+	t_conroller	*stack;
+
+	stack = malloc(sizeof(t_conroller));
+	if (!stack)
+		return (NULL);
+	stack->rr = 0;
+	stack->cambios = 0;
 	return (stack);
 }
 

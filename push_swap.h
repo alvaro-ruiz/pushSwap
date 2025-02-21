@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:22:31 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/02/12 15:33:29 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:33:13 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,12 @@ typedef struct s_Stack
 	struct s_Stack	*next;
 }	t_stack;
 
+typedef struct s_Conroller
+{
+	int				rr;
+	int				cambios;
+}	t_conroller;
+
 t_stack	*ft_stacknew(int content, int pos);
 int		ft_lstadd_back(t_stack **lst, int num, int poss);
 t_stack	*ft_lstlast(t_stack *lst);
@@ -36,6 +42,7 @@ void	ft_stack_poss(t_stack *lst, int num);
 int		ft_stackadd_back(t_stack **lst, t_stack *last);
 t_stack	*ft_lstlast_del(t_stack *lst);
 int		ft_lstsize(t_stack **lst);
+t_conroller	*ft_controller();
 
 void	ra(t_stack **a);
 void	rb(t_stack **b);

@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:55:23 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/02/12 15:32:58 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/02/20 12:44:11 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	calculacoste(t_stack **a, t_stack **b)
 	while (tmpa)
 	{
 		tmp = *b;
+		tmpa->cost = 0;
 		costeposicion(&tmpa, sizea);
 		numerocercano(&tmpa, &tmp, &nbr);
 		if (nbr->pos <= sizeb / 2)
@@ -54,14 +55,14 @@ void	numerocercano(t_stack **tmpa, t_stack **tmp, t_stack **nbr)
 	int	diferencia;
 	int	num;
 
-	num = 0;
+	num = -1;
 	diferencia = -1;
 	while (*tmp)
 	{
 		diferencia = (*tmp)->num - (*tmpa)->num;
 		if (diferencia < 0)
 			diferencia = diferencia * -1;
-		if (num == 0 || diferencia < num)
+		if (num == -1 || diferencia < num)
 		{
 			num = diferencia;
 			(*nbr) = (*tmp);
@@ -92,17 +93,21 @@ int	encuentra(t_stack **tmpa)
 int	encuentrb(t_stack *tmpb, int numbr)
 {
 	int	diferencia;
-	int	num;
+	int	diferenciaMenor;
+	int num;
 
-	num = 0;
+	diferenciaMenor = 0;
 	diferencia = -1;
 	while (tmpb)
 	{
 		diferencia = tmpb->num - numbr;
 		if (diferencia < 0)
 			diferencia = diferencia * -1;
-		if (num == 0 || diferencia < num)
-			num = diferencia;
+		if (diferenciaMenor == 0 || diferencia < diferenciaMenor)
+		{
+			diferenciaMenor = diferencia;
+			num = tmpb->num;
+		}
 		tmpb = tmpb->next;
 	}
 	return (num);
