@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 16:00:47 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/01/30 15:23:28 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/01 11:48:05 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,24 @@ void	rotate(t_stack **stack)
 	ft_stack_poss(*stack, -1);
 }
 
-void	ra(t_stack **a)
+void	ra(t_stack **a, int *movement)
 {
 	rotate(a);
+	(*movement)++;
 	write(1, "ra\n", 3);
 }
 
-void	rb(t_stack **b)
+void	rb(t_stack **b, int *movement)
 {
 	rotate(b);
+	(*movement)++;
 	write(1, "rb\n", 3);
 }
 
-void	rr(t_stack **a, t_stack **b)
+void	rr(t_stack **a, t_stack **b, int *movement)
 {
 	write(1, "rr\n", 3);
+	(*movement)++;
 	rotate(a);
 	rotate(b);
 }

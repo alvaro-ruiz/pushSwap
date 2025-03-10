@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 16:55:23 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/02/20 12:44:11 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:17:11 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ void	calculacoste(t_stack **a, t_stack **b)
 void	costeposicion(t_stack **tmpa, int size)
 {
 	if ((*tmpa)->pos <= size / 2)
-		(*tmpa)->cost = (*tmpa)->cost + (*tmpa)->pos;
+		(*tmpa)->cost = (*tmpa)->cost + (*tmpa)->pos - 1;
 	else
-		(*tmpa)->cost = (*tmpa)->cost + (size - (*tmpa)->pos) + 2;
+		(*tmpa)->cost = (*tmpa)->cost + (size - (*tmpa)->pos) + 1;
 }
 
 void	numerocercano(t_stack **tmpa, t_stack **tmp, t_stack **nbr)
@@ -71,21 +71,23 @@ void	numerocercano(t_stack **tmpa, t_stack **tmp, t_stack **nbr)
 	}
 }
 
-int	encuentra(t_stack **tmpa)
+int	encuentra(t_stack *tmpa)
 {
 	int	costmenor;
 	int	num;
 
-	costmenor = (*tmpa)->cost;
-	num = (*tmpa)->num;
-	while (*tmpa)
+	if (!tmpa)
+		return (-1);
+	costmenor = tmpa->cost;
+	num = tmpa->num;
+	while (tmpa)
 	{
-		if (costmenor > (*tmpa)->cost)
+		if (costmenor > tmpa->cost)
 		{
-			num = (*tmpa)->num;
-			costmenor = (*tmpa)->cost;
+			num = tmpa->num;
+			costmenor = tmpa->cost;
 		}
-		*tmpa = (*tmpa)->next;
+		tmpa = tmpa->next;
 	}
 	return (num);
 }
@@ -94,16 +96,18 @@ int	encuentrb(t_stack *tmpb, int numbr)
 {
 	int	diferencia;
 	int	diferenciaMenor;
-	int num;
+	int	num;
 
-	diferenciaMenor = 0;
-	diferencia = -1;
+	if (!tmpb)
+		return (-1);
+	diferenciaMenor = __INT_MAX__;
+	num = tmpb->num;              
 	while (tmpb)
 	{
 		diferencia = tmpb->num - numbr;
 		if (diferencia < 0)
-			diferencia = diferencia * -1;
-		if (diferenciaMenor == 0 || diferencia < diferenciaMenor)
+			diferencia = -diferencia;
+		if (diferencia < diferenciaMenor)
 		{
 			diferenciaMenor = diferencia;
 			num = tmpb->num;
@@ -112,3 +116,4 @@ int	encuentrb(t_stack *tmpb, int numbr)
 	}
 	return (num);
 }
+

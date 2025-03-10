@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:22:31 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/02/20 17:33:13 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/01 16:22:25 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,23 @@ t_stack	*ft_lstlast_del(t_stack *lst);
 int		ft_lstsize(t_stack **lst);
 t_conroller	*ft_controller();
 
-void	ra(t_stack **a);
-void	rb(t_stack **b);
-void	rr(t_stack **a, t_stack **b);
-void	rra(t_stack **a);
-void	rrb(t_stack **b);
-void	rrr(t_stack **a, t_stack **b);
-void	pa(t_stack **a, t_stack **b);
-void	pb(t_stack **a, t_stack **b);
-void	sa(t_stack *a);
-void	sb(t_stack *b);
-void	ss(t_stack *stacka, t_stack *stackb);
+void	ra(t_stack **a, int *movement);
+void	rb(t_stack **b, int *movement);
+void	rr(t_stack **a, t_stack **b, int *movement);
+void	rra(t_stack **a, int *movement);
+void	rrb(t_stack **b, int *movement);
+void	rrr(t_stack **a, t_stack **b, int *movement);
+void	pa(t_stack **a, t_stack **b, int *movement);
+void	pb(t_stack **a, t_stack **b, int *movement);
+void	sa(t_stack *a, int *movement);
+void	sb(t_stack *b, int *movement);
+void	ss(t_stack *a, t_stack *b, int *movement);\
 
-int		ordena_a(t_stack **a);
-int		ordena_b(t_stack **a);
+int		ordena_b(t_stack **a, int *movement);
+int		ordena_a(t_stack **a, int *movement);
+int		ordenado(t_stack *a);
 void	calculacoste(t_stack **a, t_stack **b);
 
-int		encuentra(t_stack **tmpa);
-int		encuentrb(t_stack *tmpb, int numbr);
+int		encuentrb(t_stack *tmpa);
+t_stack	*encuentra(t_stack *tmpb, int numbr);
 #endif

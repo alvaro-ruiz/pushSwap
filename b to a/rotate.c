@@ -1,46 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   reverse.c                                          :+:      :+:    :+:   */
+/*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/05 16:00:40 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/02/12 15:58:19 by aruiz-bl         ###   ########.fr       */
+/*   Created: 2024/12/05 16:00:47 by aruiz-bl          #+#    #+#             */
+/*   Updated: 2025/03/01 11:48:05 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	reverse(t_stack **stack)
+void	rotate(t_stack **stack)
 {
 	t_stack	*tmp;
 	t_stack	*last;
 
-	tmp = ft_lstlast_del(*stack);
+	tmp = *stack;
+	*stack = (*stack)->next;
 	last = ft_lstlast(*stack);
 	tmp->next = NULL;
-	ft_stack_poss(*stack, 1);
-	last->next = *stack;
-	last->pos = 1;
-	*stack = last;
+	tmp->cost = 0;
+	tmp->pos = last->pos + 1;
+	last->next = tmp;
+	ft_stack_poss(*stack, -1);
 }
 
-void	rra(t_stack **a)
+void	ra(t_stack **a, int *movement)
 {
-	write(1, "rra\n", 4);
-	reverse(a);
+	rotate(a);
+	(*movement)++;
+	write(1, "ra\n", 3);
 }
 
-void	rrb(t_stack **b)
+void	rb(t_stack **b, int *movement)
 {
-	write(1, "rrb\n", 4);
-	reverse(b);
+	rotate(b);
+	(*movement)++;
+	write(1, "rb\n", 3);
 }
 
-void	rrr(t_stack **a, t_stack **b)
+void	rr(t_stack **a, t_stack **b, int *movement)
 {
-	write(1, "rrr\n", 4);
-	reverse(a);
-	reverse(b);
+	write(1, "rr\n", 3);
+	(*movement)++;
+	rotate(a);
+	rotate(b);
 }

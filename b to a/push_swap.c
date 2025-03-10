@@ -6,23 +6,37 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:19:18 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/02/21 16:13:04 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:48:42 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+
 t_stack	*completeStack(char **argv);
 int		posiciona(t_stack **a, int num);
-int		posicionb(t_stack **b, int numB);
-int		posicionado(t_stack **a, t_stack **b, t_conroller *controller);
-void	reordenab(t_stack **b, 	t_conroller *controller);
+int		posicionado(t_stack **a, t_stack **b, t_conroller *controller, int *movement);
+void	reordenab(t_stack **a, t_conroller *controller, int *movement);
+int		ordenado(t_stack *b);
 
+/*Me tira pa' que yo la pruebe
+Se pone olorosa y me gusta cómo huele
+Instagram privado pa' que nadie la vele
+Se puso bonita porque sabe que hoy se bebe
+A portarse mal pa' sentirse bien
+No quería fumar pero le dio al pen
+Una Barbie pero no busca un Ken
+Siempre le llego cuando dice "ven"
+Pa' portarse mal se viste bien
+Dice la verdad y a veces miente también
+Apaga las notificaciones en el cel
+Ella tiene lo suyo pero hoy quiere joder*/
 int	main(int argc, char **argv)
 {
 	t_stack		*a;
 	t_stack		*b;
-	t_conroller *controller;
+	t_conroller	*controller;
+	int			movement = 0;
 
 	if (argc < 1)
 		return (write(1, "\n", 1));
@@ -31,155 +45,151 @@ int	main(int argc, char **argv)
 		controller = ft_controller();
 		a = completeStack(argv);
 		b = NULL;
-		pb(&a, &b);
-		pb(&a, &b);
-		pb(&a, &b);
-		ordena_b(&b);
-		while (a)
+		printf("----a----\n");
+		writeStack(a);
+		printf("----b----\n");
+		writeStack(b);
+		while (ordenado(a) != 1)
 		{
-			calculacoste(&a, &b);
-			if (posicionado(&a, &b, controller))
+			if (ft_lstsize(&a) == 3)
 			{
-				pb(&a, &b);
-				if (b->num < b->next->num)
-					sb(b);
-				reordenab(&b, controller);
+				ordena_a(&a, &movement);
+				break;
 			}
+			pb(&a, &b, &movement);
 		}
 		while (b)
 		{
-			pa(&a, &b);
+			printf("inicio\n");
+			printf("----a----\n");
+			writeStack(a);
+			printf("----b----\n");
+			writeStack(b);
+			calculacoste(&a, &b);
+			if (posicionado(&a, &b, controller, &movement))
+			{
+				pa(&a, &b, &movement);
+				printf("num1; %d, num2; %d\n", a->num , a->next->num);
+				if (a->num > a->next->num)
+					sa(a, &movement);
+				if (ordenado(a) == 0)
+					reordenab(&a, controller, &movement);
+				printf("%d\n", ordenado(a));
+			}
 		}
-		printf("----a---\n");
+		printf("----a----\n");
 		writeStack(a);
-		printf("---b----\n");
+		printf("----b----\n");
 		writeStack(b);
+		printf("Movements; %d\n", movement);
+		printf("%d\n", ordenado(a));
 	}
 }
 
-void	reordenab(t_stack **b, t_conroller *controller)
+void	reordenab(t_stack **a, t_conroller *controller, int *movement)
 {
 	int	i;
 
 	i = 0;
-	if (controller->rr == 0)
+	if (controller->rr == 1)
 	{
-		while (i < controller->cambios)
+		while (i <= controller->cambios)
 		{
-			rb(b);
+			ra(a, movement);
 			i++;
 		}
 	}
 	else
+	{
 		while (i < controller->cambios)
 		{
-			rrb(b);
+			rra(a, movement);
 			i++;
 		}
+	}
 }
 
-int	posicionado(t_stack **a, t_stack **b, t_conroller *controller)
+int	posicionado(t_stack **a, t_stack **b, t_conroller *controller, int *movement)
 {
-	int		aa;
-	int		bb;
-	t_stack	*tmp;
-	int		numA;
-	int		numB;
+	int	aa;
+	int	bb;
+	int	numA;
+	int	numB;
 
-	tmp = (*a);
-	numA = encuentra(&tmp);
-	tmp = (*b);
-	numB = encuentrb(tmp, numA);
+	numB = encuentrb(*b);
+	numA = encuentra(*a, numB)->num;
 	controller->cambios = 0;
-	while (1)
-	{
+	controller->rr = 0;
+
+		bb = posiciona(b, numB);
 		aa = posiciona(a, numA);
-		bb = posicionb(b, numB);
 		if (aa == 0 && bb == 0)
 		{
-			rr(a, b);
+			rrr(a, b, movement);
+			controller->rr = 1;
 			controller->cambios = controller->cambios + 1;
 		}
 		else if (aa == 1 && bb == 1)
 		{
-			rrr(a, b);
-			controller->rr = 1;
+			rr(a, b, movement);
+			controller->rr = 0;
 			controller->cambios = controller->cambios + 1;
 		}
 		else if (aa == 0 && bb == 1)
 		{
-			ra(a);
-			rrb(b);
+			rra(a, movement);
+			rb(b, movement);
 			controller->rr = 1;
 			controller->cambios = controller->cambios + 1;
 		}
 		else if (aa == 1 && bb == 0)
 		{
-			rra(a);
-			rb(b);
+			ra(a, movement);
+			rrb(b, movement);
+			controller->rr = 0;
 			controller->cambios = controller->cambios + 1;
 		}
 		else if (aa == 1 && bb == 2)
-			rra(a);
-		else if (bb == 1 && aa == 2)
 		{
-			rrb(b);
+			ra(a, movement);
+			controller->rr = 0;
+			controller->cambios = controller->cambios + 1;
+		}
+		else if (aa == 2 && bb == 1)
+			rb(b, movement);
+		else if (aa == 0 && bb == 2)
+		{
+			rra(a, movement);
 			controller->rr = 1;
 			controller->cambios = controller->cambios + 1;
 		}
-		else if (aa == 0 && bb == 2)
-			ra(a);
 		else if (aa == 2 && bb == 0)
-		{
-			rb(b);
-			controller->cambios = controller->cambios + 1;
-		}
+			rrb(b, movement);
 		else if (aa == 2 && bb == 2)
 			return (1);
-	}
+	return (0);
 }
 
 int	posiciona(t_stack **a, int num)
 {
 	t_stack	*temp;
 	int		size;
-
 	temp = *a;
 	size = ft_lstsize(a);
 	while (temp)
 	{
 		if (temp->num == num && temp->pos != 1)
 		{
-			if (temp->pos <= size / 2)
-				return (0);
-			else
+			if (temp->pos <= size / 2 + 1)
 				return (1);
+			else
+				return (0);
 		}
 		temp = temp->next;
 	}
 	return (2);
 }
 
-int	posicionb(t_stack **b, int numB)
-{
-	t_stack	*temp;
-	int		size;
-
-	temp = *b;
-	size = ft_lstsize(b);
-	while (temp)
-	{
-		if (temp->num == numB && temp->pos != 1)
-		{
-			if (temp->pos <= size / 2)
-				return (0);
-			else
-				return (1);
-		}
-		temp = temp->next;
-	}
-	return (2);
-}
 
 t_stack	*completeStack(char **argv)
 {
