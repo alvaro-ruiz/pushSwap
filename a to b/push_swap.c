@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:19:18 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/01 11:46:54 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:02:40 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,14 @@ int		posiciona(t_stack **a, int num);
 int		posicionb(t_stack **b, int numB);
 int		posicionado(t_stack **a, t_stack **b, t_conroller *controller, int *movement);
 void	reordenab(t_stack **b, t_conroller *controller, int *movement);
-int		ordenado(t_stack *b);
 
-/*Me tira pa' que yo la pruebe
-Se pone olorosa y me gusta cómo huele
-Instagram privado pa' que nadie la vele
-Se puso bonita porque sabe que hoy se bebe
-A portarse mal pa' sentirse bien
-No quería fumar pero le dio al pen
-Una Barbie pero no busca un Ken
-Siempre le llego cuando dice "ven"
-Pa' portarse mal se viste bien
-Dice la verdad y a veces miente también
-Apaga las notificaciones en el cel
-Ella tiene lo suyo pero hoy quiere joder*/
 int	main(int argc, char **argv)
 {
 	t_stack		*a;
 	t_stack		*b;
 	t_conroller	*controller;
 	int			movement = 0;
+	int			pivote;
 
 	if (argc < 1)
 		return (write(1, "\n", 1));
@@ -44,11 +32,18 @@ int	main(int argc, char **argv)
 	{
 		controller = ft_controller();
 		a = completeStack(argv);
+		pivote = ft_pivote(a);
 		b = NULL;
-		pb(&a, &b, &movement);
-		pb(&a, &b, &movement);
-		pb(&a, &b, &movement);
-		ordena_b(&b, &movement);
+		if (!ordenado(a) && ft_lstsize(&a) > 3)
+			pb(&a, &b, &movement);
+		if (!ordenado(a) && ft_lstsize(&a) > 3)
+			pb(&a, &b, &movement);
+		if (!ordenado(a) && ft_lstsize(&a) > 3)
+			pb(&a, &b, &movement);
+		if (!ordenadob(b))
+			ordena_b(&b, &movement);
+		writeStack(a);
+		writeStack(b);
 		while (a)
 		{
 			calculacoste(&a, &b);
@@ -64,7 +59,9 @@ int	main(int argc, char **argv)
 		while (b)
 			pa(&a, &b, &movement);
 		writeStack(a);
-		printf("Movements; %d", movement);
+		printf("Movements; %d\n", movement);
+		printf("%d\n", ordenado(a));
+		printf("%d", pivote);
 	}
 }
 
@@ -151,22 +148,6 @@ int	posicionado(t_stack **a, t_stack **b, t_conroller *controller, int *movement
 		else if (aa == 2 && bb == 2)
 			return (1);
 	}
-}
-
-int	ordenado(t_stack *b)
-{
-	t_stack	*tmp;
-
-	if (!b)
-		return (1);
-	tmp = b;
-	while (tmp->next)
-	{
-		if (tmp->num < tmp->next->num)
-			return (0);
-		tmp = tmp->next;
-	}
-	return (1);
 }
 
 int	posiciona(t_stack **a, int num)
