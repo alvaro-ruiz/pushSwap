@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:19:18 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/10 17:46:21 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/11 17:28:44 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,36 @@ int	main(int argc, char **argv)
 		a = completeStack(argv);
 		b = NULL;
 		size = ft_lstsize(&a);
-		if (ordenado(a) && size > 3)
+		if (size > 3)
 			pb(&a, &b);
-		if (ordenado(a) && size > 3)
+		if (size > 3)
 			pb(&a, &b);
 		if (ordenado(b) && ft_lstsize(&b) > 0)
 			sb(b);
-		while (ft_lstsize(&a) > 3 && !ordenado(a))
+		while (ft_lstsize(&a) > 3)
 		{
 			ft_find_target(&a, &b);
 			calculacoste(&a, &b);
+			printf("----a----\n");
+			write_stack(a, 0);
+			printf("----b----\n");
+			write_stack(b, 0);
+			posicionado(&a, &b, controller);
 			pb(&a, &b);
+			if (b->num < b->next->num)
+				sb(b);
+			reordenab(&b, controller);
 		}
 		ordena_a(&a);
+		ft_find_target(&b, &a);
+		while (b)
+		{
+			pa(&a, &b);
+		}
 		printf("----a----\n");
-		write_stack(a, 0);
+		write_stack(a, 1);
 		printf("----b----\n");
-		write_stack(b, 0);
+		write_stack(b, 1);
 		printf("%d\n", ordenado(a));
 	}
 }
@@ -77,85 +90,64 @@ void	reordenab(t_stack **a, t_conroller *controller)
 	}
 }
 
-/*int	posicionado(t_stack **a, t_stack **b, t_conroller *controller)
+int	posicionado(t_stack **a, t_stack **b, t_conroller *controller)
 {
-	int	aa;
-	int	bb;
-	int	numA;
-	int	numB;
+	int		posicion_a;
+	int		posicion_b;
+	t_stack	*tmp;
 
-	numB = encuentrb(*b);
-	numA = encuentra(*a, numB)->num;
+	tmp = ft_lower_cost(*a);
 	controller->cambios = 0;
 	controller->rr = 0;
-	bb = posiciona(b, numB);
-	aa = posiciona(a, numA);
-	if (aa == 0 && bb == 0)
+	while (1)
 	{
-		rrr(a, b);
-		controller->rr = 1;
-		controller->cambios = controller->cambios + 1;
-	}
-	else if (aa == 1 && bb == 1)
-	{
-		rr(a, b);
-		controller->rr = 0;
-		controller->cambios = controller->cambios + 1;
-	}
-	else if (aa == 0 && bb == 1)
-	{
-		rra(a);
-		rb(b);
-		controller->rr = 1;
-		controller->cambios = controller->cambios + 1;
-	}
-	else if (aa == 1 && bb == 0)
-	{
-		ra(a);
-		rrb(b);
-		controller->rr = 0;
-		controller->cambios = controller->cambios + 1;
-	}
-	else if (aa == 1 && bb == 2)
-	{
-		ra(a);
-		controller->rr = 0;
-		controller->cambios = controller->cambios + 1;
-	}
-	else if (aa == 2 && bb == 1)
-		rb(b);
-	else if (aa == 0 && bb == 2)
-	{
-		rra(a);
-		controller->rr = 1;
-		controller->cambios = controller->cambios + 1;
-	}
-	else if (aa == 2 && bb == 0)
-		rrb(b);
-	else if (aa == 2 && bb == 2)
-		return (1);
-	return (0);
-}*/
-
-int	posiciona(t_stack **a, int num)
-{
-	t_stack	*temp;
-	int		size;
-
-	temp = *a;
-	size = ft_lstsize(a);
-	while (temp)
-	{
-		if (temp->num == num && temp->pos != 1)
+		posicion_b = posiciona(b, tmp->target->num);
+		posicion_a = posiciona(a, tmp->num);
+		if (posicion_a == 0 && posicion_b == 0)
 		{
-			if (temp->pos <= size / 2 + 1)
-				return (1);
-			else
-				return (0);
+			rrr(a, b);
+			controller->rr = 1;
+			controller->cambios = controller->cambios + 1;
 		}
-		temp = temp->next;
+		else if (posicion_a == 1 && posicion_b == 1)
+		{
+			rr(a, b);
+			controller->rr = 0;
+			controller->cambios = controller->cambios + 1;
+		}
+		else if (posicion_a == 0 && posicion_b == 1)
+		{
+			rra(a);
+			rb(b);
+			controller->rr = 1;
+			controller->cambios = controller->cambios + 1;
+		}
+		else if (posicion_a == 1 && posicion_b == 0)
+		{
+			ra(a);
+			rrb(b);
+			controller->rr = 0;
+			controller->cambios = controller->cambios + 1;
+		}
+		else if (posicion_a == 1 && posicion_b == 2)
+		{
+			ra(a);
+			controller->rr = 0;
+			controller->cambios = controller->cambios + 1;
+		}
+		else if (posicion_a == 2 && posicion_b == 1)
+			rb(b);
+		else if (posicion_a == 0 && posicion_b == 2)
+		{
+			rra(a);
+			controller->rr = 1;
+			controller->cambios = controller->cambios + 1;
+		}
+		else if (posicion_a == 2 && posicion_b == 0)
+			rrb(b);
+		else if (posicion_a == 2 && posicion_b == 2)
+			return (1);
 	}
-	return (2);
 }
 
 t_stack	*completeStack(char **argv)
