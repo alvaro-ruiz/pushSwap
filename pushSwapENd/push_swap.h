@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:22:31 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/11 16:54:17 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:57:17 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <limits.h>
 
 typedef struct s_Stack
 {
@@ -62,12 +63,15 @@ int					ordena_b(t_stack **a);
 int					ordena_a(t_stack **a);
 int					ordenado(t_stack *a);
 
+void	move_nodes(t_stack **a, t_stack **b, t_stack *cheapest);
+
 //Calculo de coste
 void				calculacoste(t_stack **a, t_stack **b);
 
 //Utils 1
 void				ft_find_target(t_stack **a, t_stack **b);
-t_stack				*encuentra_target(t_stack *tmp, int numbr);
+void 				set_target(t_stack **a, t_stack **b);
 int					posiciona(t_stack **a, int num);
 t_stack	*ft_lower_cost(t_stack *stack);
+t_stack	*find_smallest(t_stack *stack);
 #endif

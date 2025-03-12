@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:19:18 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/11 17:28:44 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/12 17:04:38 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	main(int argc, char **argv)
 	t_stack		*a;
 	t_stack		*b;
 	t_conroller	*controller;
-	int			size;
 
 	if (argc < 1)
 		return (write(1, "\n", 1));
@@ -32,122 +31,74 @@ int	main(int argc, char **argv)
 		controller = ft_controller();
 		a = completeStack(argv);
 		b = NULL;
-		size = ft_lstsize(&a);
-		if (size > 3)
-			pb(&a, &b);
-		if (size > 3)
-			pb(&a, &b);
-		if (ordenado(b) && ft_lstsize(&b) > 0)
-			sb(b);
 		while (ft_lstsize(&a) > 3)
+			pb(&a, &b);
+		ordena_a(&a);
+		printf("----a----\n");
+		write_stack(a, 0);
+		printf("----b----\n");
+		write_stack(b, 0);
+		ft_find_target(&b, &a);
+		while (ft_lstsize(&b) > 0)
 		{
-			ft_find_target(&a, &b);
+			set_target(&a, &b);
 			calculacoste(&a, &b);
+			move_nodes(&a, &b, ft_lower_cost(b));
+			pa(&a, &b);
 			printf("----a----\n");
 			write_stack(a, 0);
-			printf("----b----\n");
-			write_stack(b, 0);
-			posicionado(&a, &b, controller);
-			pb(&a, &b);
-			if (b->num < b->next->num)
-				sb(b);
-			reordenab(&b, controller);
-		}
-		ordena_a(&a);
-		ft_find_target(&b, &a);
-		while (b)
-		{
-			pa(&a, &b);
 		}
 		printf("----a----\n");
-		write_stack(a, 1);
+		write_stack(a, 0);
 		printf("----b----\n");
-		write_stack(b, 1);
+		write_stack(b, 0);
 		printf("%d\n", ordenado(a));
 	}
 }
 
-void	reordenab(t_stack **a, t_conroller *controller)
+static void	do_rr(t_stack **a, t_stack **b, t_stack *cheapest)
 {
-	int	i;
+	while (*a != cheapest->target && *b != cheapest)
+		rr(a, b);
+}
 
-	i = 0;
-	if (controller->rr == 1)
+static void	do_rrr(t_stack **a, t_stack **b, t_stack *cheapest)
+{
+	while (*a != cheapest->target && *b != cheapest)
+		rrr(a, b);
+}
+
+void	finish_rotation(t_stack **stack, t_stack *top_node, char name)
+{
+	while (*stack != top_node)
 	{
-		while (i <= controller->cambios)
+		printf("%d\n", (*stack)->num);
+		printf("%d\n", top_node->num);
+		if (name == 'a')
 		{
-			ra(a);
-			i++;
+			if (top_node->pos < ft_lstsize(stack) / 2)
+				ra(stack);
+			else
+				rra(stack);
 		}
-	}
-	else
-	{
-		while (i < controller->cambios)
+		else if (name == 'b')
 		{
-			rra(a);
-			i++;
+			if (top_node->pos < ft_lstsize(stack) / 2)
+				rb(stack);
+			else
+				rrb(stack);
 		}
 	}
 }
 
-int	posicionado(t_stack **a, t_stack **b, t_conroller *controller)
+void	move_nodes(t_stack **a, t_stack **b, t_stack *cheapest)
 {
-	int		posicion_a;
-	int		posicion_b;
-	t_stack	*tmp;
-
-	tmp = ft_lower_cost(*a);
-	controller->cambios = 0;
-	controller->rr = 0;
-	while (1)
-	{
-		posicion_b = posiciona(b, tmp->target->num);
-		posicion_a = posiciona(a, tmp->num);
-		if (posicion_a == 0 && posicion_b == 0)
-		{
-			rrr(a, b);
-			controller->rr = 1;
-			controller->cambios = controller->cambios + 1;
-		}
-		else if (posicion_a == 1 && posicion_b == 1)
-		{
-			rr(a, b);
-			controller->rr = 0;
-			controller->cambios = controller->cambios + 1;
-		}
-		else if (posicion_a == 0 && posicion_b == 1)
-		{
-			rra(a);
-			rb(b);
-			controller->rr = 1;
-			controller->cambios = controller->cambios + 1;
-		}
-		else if (posicion_a == 1 && posicion_b == 0)
-		{
-			ra(a);
-			rrb(b);
-			controller->rr = 0;
-			controller->cambios = controller->cambios + 1;
-		}
-		else if (posicion_a == 1 && posicion_b == 2)
-		{
-			ra(a);
-			controller->rr = 0;
-			controller->cambios = controller->cambios + 1;
-		}
-		else if (posicion_a == 2 && posicion_b == 1)
-			rb(b);
-		else if (posicion_a == 0 && posicion_b == 2)
-		{
-			rra(a);
-			controller->rr = 1;
-			controller->cambios = controller->cambios + 1;
-		}
-		else if (posicion_a == 2 && posicion_b == 0)
-			rrb(b);
-		else if (posicion_a == 2 && posicion_b == 2)
-			return (1);
-	}
+	if (cheapest->pos < ft_lstsize(b) / 2 && cheapest->target->pos >= ft_lstsize(a) / 2)
+		do_rr(a, b, cheapest);
+	else if (cheapest->pos >= ft_lstsize(b) / 2 && cheapest->target->pos < ft_lstsize(a) / 2)
+		do_rrr(a, b, cheapest);
+	finish_rotation(b, cheapest, 'b');
+	finish_rotation(a, cheapest->target, 'a');
 }
 
 t_stack	*completeStack(char **argv)

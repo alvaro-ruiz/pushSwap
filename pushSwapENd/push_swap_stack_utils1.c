@@ -6,52 +6,73 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:43:24 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/11 17:00:05 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/12 16:15:55 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void ft_find_target(t_stack **a, t_stack **b)
+void	set_target(t_stack **a, t_stack **b)
 {
-	t_stack *tmp_a = *a;
-    t_stack *tmp_b;
+	t_stack	*a_head;
+	t_stack	*b_head;
 
-	while (tmp_a)
+	a_head = *a;
+	b_head = *b;
+	while (*b)
 	{
-		tmp_b = *b;
-		tmp_a->target = encuentra_target(tmp_b, tmp_a->num);
-		tmp_a = tmp_a->next;
+		ft_find_target(a, b);
+		*b = (*b)->next;
 	}
+	*a = a_head;
+	*b = b_head;
 }
 
-//Busca el numero target del int que se le pasa
-t_stack	*encuentra_target(t_stack *tmp, int numbr)
-{
-	int		diferencia;
-	int		diferenciaMenor;
-	t_stack	*num;
 
-	if (!tmp)
-		return (tmp);
-	num = tmp;
-	diferenciaMenor = tmp->num - numbr;
-	if (diferenciaMenor < 0)
-		diferenciaMenor = -diferenciaMenor;
-	tmp = tmp->next;
-	while (tmp)
+void	ft_find_target(t_stack **a, t_stack **b)
+{
+	t_stack	*target_node;
+	t_stack	*a_head;
+	int		value;
+
+	value = INT_MAX;
+	a_head = *a;
+	target_node = NULL;
+	while (*a)
 	{
-		diferencia = tmp->num - numbr;
-		if (diferencia < 0)
-			diferencia = -diferencia;
-		if (diferencia < diferenciaMenor)
+		if ((*a)->num <= value && (*b)->num < (*a)->num)
 		{
-			diferenciaMenor = diferencia;
-			num = tmp;
+			target_node = *a;
+			value = (*a)->num;
 		}
-		tmp = tmp->next;
+		*a = (*a)->next;
 	}
-	return (num);
+	if (INT_MAX == value)
+	{
+		*a = a_head;
+		(*b)->target = find_smallest(*a);
+	}
+	else
+		(*b)->target = target_node;
+	*a = a_head;
+}
+
+t_stack	*find_smallest(t_stack *stack)
+{
+	t_stack	*smallest;
+
+	smallest = stack;
+	if (NULL == stack)
+		return (NULL);
+	while (stack->next)
+	{
+		if (stack->num < smallest->num)
+			smallest = stack;
+		stack = stack->next;
+	}
+	if (stack->num < smallest->num)
+		smallest = stack;
+	return (smallest);
 }
 
 // Mira si el numero que le pasamos por argumento esta en la primera posicion
@@ -79,7 +100,7 @@ int	posiciona(t_stack **a, int num)
 // Busca en el stack el nodo que tiene menor coste
 t_stack	*ft_lower_cost(t_stack *stack)
 {
-	int	costmenor;
+	int		costmenor;
 	t_stack	*temp;
 
 	if (!stack)
