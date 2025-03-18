@@ -12,23 +12,21 @@
 
 #include "push_swap.h"
 
-t_stack	*completeStack(char **argv);
-int		posiciona(t_stack **a, int num);
-int		posicionado(t_stack **a, t_stack **b, t_conroller *controller);
-void	reordenab(t_stack **a, t_conroller *controller);
-int		ordenado(t_stack *b);
+t_stack *completeStack(char **argv);
+int posiciona(t_stack **a, int num);
+int posicionado(t_stack **a, t_stack **b, t_conroller *controller);
+void reordenab(t_stack **a, t_conroller *controller);
+int ordenado(t_stack *b);
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	t_stack		*a;
-	t_stack		*b;
-	t_conroller	*controller;
+	t_stack *a;
+	t_stack *b;
 
 	if (argc < 1)
 		return (write(1, "\n", 1));
 	else
 	{
-		controller = ft_controller();
 		a = completeStack(argv);
 		b = NULL;
 		while (ft_lstsize(&a) > 3)
@@ -38,7 +36,6 @@ int	main(int argc, char **argv)
 		write_stack(a, 0);
 		printf("----b----\n");
 		write_stack(b, 0);
-		ft_find_target(&b, &a);
 		while (ft_lstsize(&b) > 0)
 		{
 			set_target(&a, &b);
@@ -47,7 +44,10 @@ int	main(int argc, char **argv)
 			pa(&a, &b);
 			printf("----a----\n");
 			write_stack(a, 0);
+			printf("----b----\n");
+			write_stack(b, 0);
 		}
+		check_rotation(&a);
 		printf("----a----\n");
 		write_stack(a, 0);
 		printf("----b----\n");
@@ -56,19 +56,19 @@ int	main(int argc, char **argv)
 	}
 }
 
-static void	do_rr(t_stack **a, t_stack **b, t_stack *cheapest)
+static void do_rr(t_stack **a, t_stack **b, t_stack *cheapest)
 {
 	while (*a != cheapest->target && *b != cheapest)
 		rr(a, b);
 }
 
-static void	do_rrr(t_stack **a, t_stack **b, t_stack *cheapest)
+static void do_rrr(t_stack **a, t_stack **b, t_stack *cheapest)
 {
 	while (*a != cheapest->target && *b != cheapest)
 		rrr(a, b);
 }
 
-void	finish_rotation(t_stack **stack, t_stack *top_node, char name)
+void finish_rotation(t_stack **stack, t_stack *top_node, char name)
 {
 	while (*stack != top_node)
 	{
@@ -91,7 +91,7 @@ void	finish_rotation(t_stack **stack, t_stack *top_node, char name)
 	}
 }
 
-void	move_nodes(t_stack **a, t_stack **b, t_stack *cheapest)
+void move_nodes(t_stack **a, t_stack **b, t_stack *cheapest)
 {
 	if (cheapest->pos < ft_lstsize(b) / 2 && cheapest->target->pos >= ft_lstsize(a) / 2)
 		do_rr(a, b, cheapest);
@@ -101,11 +101,11 @@ void	move_nodes(t_stack **a, t_stack **b, t_stack *cheapest)
 	finish_rotation(a, cheapest->target, 'a');
 }
 
-t_stack	*completeStack(char **argv)
+t_stack *completeStack(char **argv)
 {
-	t_stack	*a;
-	int		i;
-	int		ok;
+	t_stack *a;
+	int i;
+	int ok;
 
 	i = 2;
 	a = ft_stacknew(atoi(argv[1]), 1);

@@ -12,10 +12,10 @@
 
 #include "push_swap.h"
 
-void	set_target(t_stack **a, t_stack **b)
+void set_target(t_stack **a, t_stack **b)
 {
-	t_stack	*a_head;
-	t_stack	*b_head;
+	t_stack *a_head;
+	t_stack *b_head;
 
 	a_head = *a;
 	b_head = *b;
@@ -28,12 +28,11 @@ void	set_target(t_stack **a, t_stack **b)
 	*b = b_head;
 }
 
-
-void	ft_find_target(t_stack **a, t_stack **b)
+void ft_find_target(t_stack **a, t_stack **b)
 {
-	t_stack	*target_node;
-	t_stack	*a_head;
-	int		value;
+	t_stack *target_node;
+	t_stack *a_head;
+	int value;
 
 	value = INT_MAX;
 	a_head = *a;
@@ -57,9 +56,9 @@ void	ft_find_target(t_stack **a, t_stack **b)
 	*a = a_head;
 }
 
-t_stack	*find_smallest(t_stack *stack)
+t_stack *find_smallest(t_stack *stack)
 {
-	t_stack	*smallest;
+	t_stack *smallest;
 
 	smallest = stack;
 	if (NULL == stack)
@@ -76,10 +75,10 @@ t_stack	*find_smallest(t_stack *stack)
 }
 
 // Mira si el numero que le pasamos por argumento esta en la primera posicion
-int	posiciona(t_stack **a, int num)
+int posiciona(t_stack **a, int num)
 {
-	t_stack	*temp;
-	int		size;
+	t_stack *temp;
+	int size;
 
 	temp = *a;
 	size = ft_lstsize(a);
@@ -98,10 +97,10 @@ int	posiciona(t_stack **a, int num)
 }
 
 // Busca en el stack el nodo que tiene menor coste
-t_stack	*ft_lower_cost(t_stack *stack)
+t_stack *ft_lower_cost(t_stack *stack)
 {
-	int		costmenor;
-	t_stack	*temp;
+	int costmenor;
+	t_stack *temp;
 
 	if (!stack)
 		return (NULL);
@@ -117,4 +116,41 @@ t_stack	*ft_lower_cost(t_stack *stack)
 		stack = stack->next;
 	}
 	return (temp);
+}
+
+t_stack *find_highest_node(t_stack *stack)
+{
+	int highest;
+	t_stack *highest_node;
+
+	if (NULL == stack)
+		return (NULL);
+	highest = INT_MIN;
+	while (stack)
+	{
+		if (stack->num > highest)
+		{
+			highest = stack->num;
+			highest_node = stack;
+		}
+		stack = stack->next;
+	}
+	return (highest_node);
+}
+
+void check_rotation(t_stack **a)
+{
+	t_stack *smallest;
+
+	smallest = NULL;
+	if (!ordenado(*a))
+	{
+		smallest = ft_lower_cost(*a);
+		if (smallest->pos < ft_lstsize(a) / 2)
+			while (*a != smallest)
+				ra(a);
+		else
+			while (*a != smallest)
+				rra(a);
+	}
 }

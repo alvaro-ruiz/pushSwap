@@ -12,52 +12,29 @@
 
 #include "push_swap.h"
 
-int	ordena_a(t_stack **a)
+int ordena_a(t_stack **a)
 {
-	if (((*a)->num < (*a)->next->num)
-		&& ((*a)->next->num < (*a)->next->next->num))
-		return (1);
-	else
-	{
-		if ((*a)->num < (*a)->next->num)
-			ra(a);
-		else if ((*a)->num < (*a)->next->num)
-			rra(a);
-		if ((*a)->num > (*a)->next->num)
-			sa(*a);
-		return (1);
-	}
-}
-int	ordena_b(t_stack **a)
-{
-	if (((*a)->num > (*a)->next->num)
-		&& ((*a)->next->num > (*a)->next->next->num))
-		return (1);
-	else
-	{
-		if ((*a)->num < (*a)->next->num)
-			rb(a);
-		else if ((*a)->num > (*a)->next->num)
-			rrb(a);
-		if ((*a)->num < (*a)->next->num)
-			sb(*a);
-		return (1);
-	}
+	t_stack *highest_node;
+
+	highest_node = find_highest_node(*a);
+	if (*a == highest_node)
+		ra(a);
+	else if ((*a)->next == highest_node)
+		rra(a);
+	if ((*a)->num > (*a)->next->num)
+		sa(*a);
+	return (1);
 }
 
-int	ordenado(t_stack *a)
+int ordenado(t_stack *stack)
 {
-	t_stack	*tmp;
-
-	if (!a)
+	if (NULL == stack)
 		return (1);
-	tmp = a;
-	while (tmp->next)
+	while (stack->next)
 	{
-		//printf("Comparando: %d con %d\n", tmp->num, tmp->next->num);
-		if (tmp->next->num < tmp->num)
+		if (stack->num > stack->next->num)
 			return (0);
-		tmp = tmp->next;
+		stack = stack->next;
 	}
 	return (1);
 }
