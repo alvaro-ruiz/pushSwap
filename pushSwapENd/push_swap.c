@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:19:18 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/12 17:04:38 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/18 17:23:44 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,16 @@ int main(int argc, char **argv)
 		while (ft_lstsize(&a) > 3)
 			pb(&a, &b);
 		ordena_a(&a);
-		printf("----a----\n");
-		write_stack(a, 0);
-		printf("----b----\n");
-		write_stack(b, 0);
-		while (ft_lstsize(&b) > 0)
+		while (ft_lstsize(&b) >= 1)
 		{
 			set_target(&a, &b);
 			calculacoste(&a, &b);
 			move_nodes(&a, &b, ft_lower_cost(b));
 			pa(&a, &b);
-			printf("----a----\n");
-			write_stack(a, 0);
-			printf("----b----\n");
-			write_stack(b, 0);
 		}
 		check_rotation(&a);
-		printf("----a----\n");
-		write_stack(a, 0);
-		printf("----b----\n");
-		write_stack(b, 0);
-		printf("%d\n", ordenado(a));
+		/*printf ("%d\n", ordenado(a));
+		write_stack(a, 0);*/
 	}
 }
 
@@ -72,18 +61,16 @@ void finish_rotation(t_stack **stack, t_stack *top_node, char name)
 {
 	while (*stack != top_node)
 	{
-		printf("%d\n", (*stack)->num);
-		printf("%d\n", top_node->num);
 		if (name == 'a')
 		{
-			if (top_node->pos < ft_lstsize(stack) / 2)
+			if (top_node->pos <= ft_lstsize(stack) / 2 + 1)
 				ra(stack);
 			else
 				rra(stack);
 		}
 		else if (name == 'b')
 		{
-			if (top_node->pos < ft_lstsize(stack) / 2)
+			if (top_node->pos <= ft_lstsize(stack) / 2 + 1)
 				rb(stack);
 			else
 				rrb(stack);
@@ -93,9 +80,9 @@ void finish_rotation(t_stack **stack, t_stack *top_node, char name)
 
 void move_nodes(t_stack **a, t_stack **b, t_stack *cheapest)
 {
-	if (cheapest->pos < ft_lstsize(b) / 2 && cheapest->target->pos >= ft_lstsize(a) / 2)
+	if (cheapest->pos <= ft_lstsize(b) / 2 + 1 && cheapest->target->pos > ft_lstsize(a) / 2 + 1)
 		do_rr(a, b, cheapest);
-	else if (cheapest->pos >= ft_lstsize(b) / 2 && cheapest->target->pos < ft_lstsize(a) / 2)
+	else if (cheapest->pos > ft_lstsize(b) / 2 + 1 && cheapest->target->pos <= ft_lstsize(a) / 2 + 1)
 		do_rrr(a, b, cheapest);
 	finish_rotation(b, cheapest, 'b');
 	finish_rotation(a, cheapest->target, 'a');

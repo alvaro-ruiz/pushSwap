@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/10 16:43:24 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/12 16:15:55 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:43:37 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,8 @@ void check_rotation(t_stack **a)
 	smallest = NULL;
 	if (!ordenado(*a))
 	{
-		smallest = ft_lower_cost(*a);
-		if (smallest->pos < ft_lstsize(a) / 2)
+		smallest = find_smallest(*a);
+		if (smallest->pos <= ft_lstsize(a) / 2 + 1)
 			while (*a != smallest)
 				ra(a);
 		else

@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:22:31 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/12 16:57:17 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:34:05 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void ft_lstdelone(t_stack *lst);
 void ft_lstclear(t_stack **lst);
 void write_stack(t_stack *stack, int target);
 void ft_stack_poss(t_stack *lst, int num);
-int ft_stackadd_back(t_stack **lst, t_stack *last);
 t_stack *ft_lstlast_del(t_stack *lst);
 int ft_lstsize(t_stack **lst);
 t_conroller *ft_controller(void);

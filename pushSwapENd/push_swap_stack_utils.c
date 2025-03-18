@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:21:42 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/10 17:16:10 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/18 16:34:09 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,6 @@ t_stack	*ft_stacknew(int content, int pos)
 	return (stack);
 }
 
-t_conroller	*ft_controller()
-{
-	t_conroller	*stack;
-
-	stack = malloc(sizeof(t_conroller));
-	if (!stack)
-		return (NULL);
-	stack->rr = 0;
-	stack->cambios = 0;
-	return (stack);
-}
-
 int	ft_lstadd_back(t_stack **lst, int num, int poss)
 {
 	t_stack	*tmp;
@@ -54,17 +42,6 @@ int	ft_lstadd_back(t_stack **lst, int num, int poss)
 	new->next = NULL;
 	tmp = ft_lstlast(*lst);
 	tmp->next = new;
-	return (1);
-}
-
-int	ft_stackadd_back(t_stack **lst, t_stack *last)
-{
-	t_stack	*tmp;
-
-	if (!last || !*lst)
-		return (0);
-	tmp = ft_lstlast(*lst);
-	tmp->next = last;
 	return (1);
 }
 
@@ -110,7 +87,7 @@ t_stack	*ft_lstlast_del(t_stack *lst)
 int	ft_lstsize(t_stack **lst)
 {
 	t_stack *last;
-	if (!lst)
+	if (!(*lst))
 		return (0);
 	last = ft_lstlast(*lst);
 	return (last->pos);
