@@ -1,39 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/20 13:13:38 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/20 15:05:42 by aruiz-bl         ###   ########.fr       */
+/*   Created: 2024/09/10 17:24:25 by aruiz-bl          #+#    #+#             */
+/*   Updated: 2024/09/24 16:20:07 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	t_stack *a;
-	t_stack *b;
+	int				i;
+	unsigned char	*d;
+	int				m;
 
-	a = NULL;
-	b = NULL;
-	if (argc == 1 || (argc == 2 && !argv[1][0]))
-		return (1);
-	else if (argc == 2)
-		argv = ft_split(argv[1], ' ');
-	if (!argv)
-		return (0);
-	a = completeStack(argv);
-	if (!ordenado(a))
+	m = (int) n;
+	d = (unsigned char *)s;
+	i = 0;
+	while (i < m)
 	{
-		if (ft_lstsize(&a) == 2)
-			sa(a);
-		else if (ft_lstsize(&a) == 3)
-			ordena_a(&a);
-		else
-			push_swap(a, b);
+		d[i] = c;
+		i++;
 	}
-	return (0);
+	return ((void *)d);
 }

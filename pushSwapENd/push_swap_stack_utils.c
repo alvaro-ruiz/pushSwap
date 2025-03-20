@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:21:42 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/18 16:34:09 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:29:50 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ void	write_stack(t_stack *stack, int target)
 	while (stack != NULL)
 	{
 		if (target == 0)
-			printf("digito: %d , pos: %d , cost: %d\n", stack->num, stack->pos, stack->cost);
+			printf("digito: %ld , pos: %d , cost: %d\n", stack->num, stack->pos, stack->cost);
 		else 
-			printf("digito: %d , pos: %d , cost: %d, target: %d\n", stack->num, stack->pos, stack->cost, stack->target->num);
+			printf("digito: %ld , pos: %d , cost: %d, target: %ld\n", stack->num, stack->pos, stack->cost, stack->target->num);
 		//printf("%d, ", stack->num);
 		stack = stack->next;
 	}

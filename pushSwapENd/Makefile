@@ -1,36 +1,47 @@
-SRCS = push_swap.c\
-		push_swap_stack_utils.c\
-		push_swap_stack_utils1.c\
-		swap.c\
-		rotate.c\
-		reverse.c\
-		push.c\
-		ordena.c\
-		calcularcoste.c
-
-OBJS = ${SRCS:.c=.o}
-NAME = libpushswap.a
-LIBC = ar rcs
+NAME = push_swap
 CC = cc
-RM = rm -f
 CFLAGS = -Wall -Wextra -Werror
+RM = rm -rf
 
+LIBFT_PATH = lib/
+LIBFT = $(LIBFT_PATH)/libft.a
 
-all: ${NAME}
+HEADERS = -I $(LIBFT_PATH)
 
-${NAME}: ${OBJS}
-	${LIBC} ${NAME} ${OBJS}
+SRCS = main.c\
+       push_swap.c\
+       push_swap_stack_utils.c\
+       push_swap_stack_utils1.c\
+       swap.c\
+       rotate.c\
+       reverse.c\
+       push.c\
+       ordena.c\
+       calcularcoste.c
 
-%.o: %.c
-	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+OBJDIR = obj/
+OBJS = $(addprefix $(OBJDIR), $(SRCS:%.c=%.o))  # Corrección en la expansión de OBJS
+
+all : $(LIBFT) $(OBJDIR) $(NAME)
+
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(HEADERS) -o $(NAME)
+
+$(OBJDIR)%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR):
+	mkdir -p $@
+
+$(LIBFT):
+	make -C $(LIBFT_PATH)
 
 clean:
-	${RM} ${OBJS} ${OBJSB}
+	$(RM) $(OBJDIR)
+	make -C $(LIBFT_PATH) clean
 
-fclean: clean
-	rm -f $(NAME)
+fclean:
+	$(RM) $(OBJDIR) $(NAME)
+	make -C $(LIBFT_PATH) fclean
 
 re: fclean all
-
-run:
-	$(CC) $(CFLAGS) -o a push_swap.c -L. -lpushswap

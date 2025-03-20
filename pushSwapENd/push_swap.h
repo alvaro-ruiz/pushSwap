@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 17:22:31 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/18 16:34:05 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:51:18 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,21 +18,20 @@
 #include <string.h>
 #include <unistd.h>
 #include <limits.h>
+# include "lib/libft.h"
 
 typedef struct s_Stack
 {
-	int num;
+	long num;
 	int pos;
 	int cost;
 	struct s_Stack *target;
 	struct s_Stack *next;
 } t_stack;
 
-typedef struct s_Conroller
-{
-	int rr;
-	int cambios;
-} t_conroller;
+int	main(int argc, char **argv);
+
+char	**ft_split(const char *s, char c);
 
 t_stack *completeStack(char **argv);
 int push_swap(t_stack *a, t_stack *b);
@@ -46,7 +45,6 @@ void write_stack(t_stack *stack, int target);
 void ft_stack_poss(t_stack *lst, int num);
 t_stack *ft_lstlast_del(t_stack *lst);
 int ft_lstsize(t_stack **lst);
-t_conroller *ft_controller(void);
 
 // Movements
 void ra(t_stack **a);

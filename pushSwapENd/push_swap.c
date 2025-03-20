@@ -6,7 +6,7 @@
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:19:18 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/18 17:23:44 by aruiz-bl         ###   ########.fr       */
+/*   Updated: 2025/03/20 15:03:30 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 t_stack *completeStack(char **argv);
 int posiciona(t_stack **a, int num);
-int posicionado(t_stack **a, t_stack **b, t_conroller *controller);
-void reordenab(t_stack **a, t_conroller *controller);
 int ordenado(t_stack *b);
 
 int push_swap(t_stack *a, t_stack *b)
@@ -31,8 +29,7 @@ int push_swap(t_stack *a, t_stack *b)
 		pa(&a, &b);
 	}
 	check_rotation(&a);
-	printf ("%d\n", ordenado(a));
-	write_stack(a, 0);
+	return (0);
 }
 
 static void do_rr(t_stack **a, t_stack **b, t_stack *cheapest)

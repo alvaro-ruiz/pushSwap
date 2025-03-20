@@ -1,39 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aruiz-bl <aruiz-bl@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/20 13:13:38 by aruiz-bl          #+#    #+#             */
-/*   Updated: 2025/03/20 15:05:42 by aruiz-bl         ###   ########.fr       */
+/*   Created: 2024/09/10 16:53:41 by aruiz-bl          #+#    #+#             */
+/*   Updated: 2024/10/02 16:54:43 by aruiz-bl         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "libft.h"
 
-int	main(int argc, char **argv)
+size_t	ft_strlen(const char *str)
 {
-	t_stack *a;
-	t_stack *b;
+	size_t	i;
 
-	a = NULL;
-	b = NULL;
-	if (argc == 1 || (argc == 2 && !argv[1][0]))
-		return (1);
-	else if (argc == 2)
-		argv = ft_split(argv[1], ' ');
-	if (!argv)
-		return (0);
-	a = completeStack(argv);
-	if (!ordenado(a))
+	i = 0;
+	while (str[i])
 	{
-		if (ft_lstsize(&a) == 2)
-			sa(a);
-		else if (ft_lstsize(&a) == 3)
-			ordena_a(&a);
-		else
-			push_swap(a, b);
+		i++;
 	}
-	return (0);
+	return (i);
 }
