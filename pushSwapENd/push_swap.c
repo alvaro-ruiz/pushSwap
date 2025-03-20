@@ -18,31 +18,21 @@ int posicionado(t_stack **a, t_stack **b, t_conroller *controller);
 void reordenab(t_stack **a, t_conroller *controller);
 int ordenado(t_stack *b);
 
-int main(int argc, char **argv)
+int push_swap(t_stack *a, t_stack *b)
 {
-	t_stack *a;
-	t_stack *b;
-
-	if (argc < 1)
-		return (write(1, "\n", 1));
-	else
+	while (ft_lstsize(&a) > 3)
+		pb(&a, &b);
+	ordena_a(&a);
+	while (ft_lstsize(&b) >= 1)
 	{
-		a = completeStack(argv);
-		b = NULL;
-		while (ft_lstsize(&a) > 3)
-			pb(&a, &b);
-		ordena_a(&a);
-		while (ft_lstsize(&b) >= 1)
-		{
-			set_target(&a, &b);
-			calculacoste(&a, &b);
-			move_nodes(&a, &b, ft_lower_cost(b));
-			pa(&a, &b);
-		}
-		check_rotation(&a);
-		/*printf ("%d\n", ordenado(a));
-		write_stack(a, 0);*/
+		set_target(&a, &b);
+		calculacoste(&a, &b);
+		move_nodes(&a, &b, ft_lower_cost(b));
+		pa(&a, &b);
 	}
+	check_rotation(&a);
+	printf ("%d\n", ordenado(a));
+	write_stack(a, 0);
 }
 
 static void do_rr(t_stack **a, t_stack **b, t_stack *cheapest)

@@ -34,6 +34,9 @@ typedef struct s_Conroller
 	int cambios;
 } t_conroller;
 
+t_stack *completeStack(char **argv);
+int push_swap(t_stack *a, t_stack *b);
+
 t_stack *ft_stacknew(int content, int pos);
 int ft_lstadd_back(t_stack **lst, int num, int poss);
 t_stack *ft_lstlast(t_stack *lst);
